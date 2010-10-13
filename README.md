@@ -57,7 +57,7 @@ TODO
 * url helper
 * namespace
 
-Run Examples
+Run Example
 ----
 
     shotgun -Ilib example/config.ru
