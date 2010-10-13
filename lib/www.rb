@@ -52,7 +52,11 @@ class Www
       if route
         handler = route.clazz.new(request)
         args = match[1..-1]
-        puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})"
+        args << request.params
+        # adjust args
+        arity = handler.method(:"www_#{route.name}").arity
+        args = arity == 0 ? [] : args[0..(arity-1)]
+        puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})" # TODO: use logger
         handler.send(route.name, *args)
       else
         error 404
