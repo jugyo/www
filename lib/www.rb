@@ -2,9 +2,6 @@
 require 'www/route'
 
 class Www
-  autoload :Route, 'www/route'
-  autoload :App, 'www/app'
-
   @@current_route = nil
   @@routes = []
 
