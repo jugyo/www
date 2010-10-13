@@ -6,12 +6,11 @@ begin
   Jeweler::Tasks.new do |gem|
     gem.name = "www"
     gem.summary = %Q{World Wide Web}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.description = %Q{A World Wide Web Application Framework}
     gem.email = "jugyo.org@gmail.com"
     gem.homepage = "http://github.com/jugyo/www"
     gem.authors = ["jugyo"]
     gem.add_development_dependency "rspec", ">= 1.2.9"
-    gem.add_development_dependency "yard", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
