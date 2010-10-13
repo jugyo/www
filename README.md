@@ -42,6 +42,9 @@ config.ru
     require 'app'
     run Www
 
+rackup
+
+    % rackup config.ru
 
 TODO
 ----
