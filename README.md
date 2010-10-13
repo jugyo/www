@@ -60,7 +60,7 @@ TODO
 Run Examples
 ----
 
-    shotgun -Ilib examples/config.ru
+    shotgun -Ilib example/config.ru
 
 Note on Patches/Pull Requests
 ----
