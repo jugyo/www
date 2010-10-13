@@ -14,7 +14,6 @@ class Www
     end
 
     def route(pattern, methods = [:get])
-      # TODO: 他のとかぶってたら warnning を出した方が良いかもしれない
       @@current_route = Route.new(pattern, methods, self)
     end
 
@@ -31,6 +30,16 @@ class Www
       @@current_route.name = name
       @@routes << @@current_route
       @@current_route = nil
+
+      class_eval do
+        alias_method :"www_#{name}", name
+        define_method name do |*args|
+          instance_eval(&self.class.before_block)
+          body = send(:"www_#{name}", *args) || ''
+          body = body.inspect unless body.is_a?(String)
+          [@response.status, @response.header, [body].flatten]
+        end
+      end
     end
 
     def error(code)
@@ -38,41 +47,26 @@ class Www
     end
 
     def call(env)
-      request  = Rack::Request.new(env)
-      route, match = find_route(request)
+      request = Rack::Request.new(env)
+      route, match = find_route(request.path_info, request.request_method)
       if route
-        handler = route.clazz.new(request, route.name)
-        arity = handler.method(route.name).arity
-        args = match[0..arity]
-        args.shift
+        handler = route.clazz.new(request)
+        args = match[1..-1]
         puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})"
-        handler.process!(args)
+        handler.send(route.name, *args)
       else
         error 404
       end
     end
 
-    def find_route(request)
-      @@routes.each do |route|
-        if route.pattern =~ request.path_info &&
-            route.request_methods.include?(request.request_method)
-          return route, $~
-        end
-      end
-      nil
+    def find_route(path, request_method)
+      [@@routes.detect { |route|
+          route.pattern =~ path && route.request_methods.include?(request_method) }, $~]
     end
   end
 
-  def initialize(request, method_name)
-    @request  = request
-    @method_name = method_name
+  def initialize(request = nil)
+    @request = request
     @response = Rack::Response.new
-    instance_eval(&self.class.before_block)
-  end
-
-  def process!(args)
-    body = self.send(@method_name, *args) || ''
-    body = body.inspect unless body.is_a?(String)
-    [@response.status, @response.header, [body].flatten]
   end
 end
