@@ -22,13 +22,13 @@ app.rb
       end
 
       route '/foo' # /foo
-      def foo
-        "foo"
+      def foo(params)
+        params
       end
 
       route %r{/regexp/?(.*)} # ex: /regexp/foo
-      def regexp(arg)
-        arg
+      def regexp(arg, params)
+        "#{arg} - #{params.inspect}"
       end
 
       route %r{/(\d{4})/(\d{2})/(\d{2})} # ex: /2009/10/10

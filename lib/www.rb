@@ -16,6 +16,12 @@ class Www
     def route(pattern, methods = [:get])
       @@current_route = Route.new(pattern, methods, self)
     end
+    alias_method :_, :route
+
+    def get(pattern) _(pattern, :get) end
+    def post(pattern) _(pattern, :post) end
+    def put(pattern) _(pattern, :put) end
+    def delete(pattern) _(pattern, :delete) end
 
     def before(&block)
       @before_block = block
@@ -46,6 +52,11 @@ class Www
       [code, {"Content-Type" => "text/html"}, []]
     end
 
+    def find_route(path, request_method)
+      [@@routes.detect { |route|
+          route.pattern =~ path && route.request_methods.include?(request_method) }, $~]
+    end
+
     def call(env)
       request = Rack::Request.new(env)
       route, match = find_route(request.path_info, request.request_method)
@@ -61,11 +72,6 @@ class Www
       else
         error 404
       end
-    end
-
-    def find_route(path, request_method)
-      [@@routes.detect { |route|
-          route.pattern =~ path && route.request_methods.include?(request_method) }, $~]
     end
   end
 
