@@ -1,4 +1,4 @@
-WWW
+Www
 ====
 
 World Wide Web
@@ -11,7 +11,7 @@ app.rb
     # encoding: utf-8
     require 'www'
 
-    class Foo < Www
+    class Foo < Www::Base
       before do
         # do something
       end
@@ -40,7 +40,7 @@ app.rb
 config.ru
 
     require 'app'
-    run Www
+    run Www::App
 
 rackup
 
@@ -49,6 +49,7 @@ rackup
 TODO
 ----
 
+* specs
 * handle static files
 * view
 * redirect

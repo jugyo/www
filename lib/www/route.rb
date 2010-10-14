@@ -1,5 +1,5 @@
 # encoding: utf-8
-class Www
+module Www
   class Route
     attr_accessor :pattern, :request_methods, :name, :clazz
     def initialize(pattern, request_methods, clazz)
@@ -8,12 +8,9 @@ class Www
       @clazz = clazz
     end
 
-    def to_s
-      inspect
-    end
-
     def inspect
       "#<#{self.class}: #{pattern}, [#{request_methods.join(',')}] => #{clazz}##{name} >"
     end
+    alias_method :to_s, :inspect
   end
 end

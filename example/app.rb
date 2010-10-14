@@ -1,7 +1,7 @@
 # encoding: utf-8
 require 'www'
 
-class Foo < Www
+class Foo < Www::Base
   before do
     # do something
   end
