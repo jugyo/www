@@ -3,12 +3,7 @@ class Www
   class Route
     attr_accessor :pattern, :request_methods, :name, :clazz
     def initialize(pattern, request_methods, clazz)
-      case pattern
-      when Regexp then @pattern = /^#{pattern}$/
-      when String then @pattern = /^#{Regexp.quote(pattern)}$/
-      else
-        raise 'pattern must be Regexp or String'
-      end
+      @pattern = "^#{pattern}$"
       @request_methods = [request_methods].flatten.map { |m| m.to_s.upcase }
       @clazz = clazz
     end

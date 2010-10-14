@@ -51,7 +51,7 @@ class Www
 
     def find_route(path, request_method)
       [@@routes.detect { |route|
-          route.pattern =~ path && route.request_methods.include?(request_method) }, $~]
+          path.match(route.pattern) && route.request_methods.include?(request_method) }, $~]
     end
 
     def call(env)
