@@ -10,6 +10,7 @@ begin
     gem.email = "jugyo.org@gmail.com"
     gem.homepage = "http://github.com/jugyo/www"
     gem.authors = ["jugyo"]
+    gem.add_dependency "rack", ">= 1.2.1"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
