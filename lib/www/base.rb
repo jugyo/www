@@ -14,9 +14,9 @@ module Www
       end
       alias_method :_, :route
 
-      def get(pattern) _(pattern, :get) end
-      def post(pattern) _(pattern, :post) end
-      def put(pattern) _(pattern, :put) end
+      def get(pattern)    _(pattern, :get)    end
+      def post(pattern)   _(pattern, :post)   end
+      def put(pattern)    _(pattern, :put)    end
       def delete(pattern) _(pattern, :delete) end
 
       def before(&block)
