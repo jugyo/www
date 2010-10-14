@@ -2,7 +2,7 @@ class Foo < Www::Base
   view_dir File.join(File.dirname(__FILE__), 'views')
 
   before {}
-  before :foo_required
+  before(:foo, :index) {}
 
   get '/'
   def index
@@ -23,9 +23,6 @@ class Foo < Www::Base
   def entry(year, month, date)
     [year, month, date]
   end
-
-  def foo_required
-  end
 end
 
 def app
@@ -36,8 +33,8 @@ describe "Www" do
   it 'should call before block' do
     foo = Foo.new
     2.times do
-      mock.proxy(foo).foo_required
-      mock.proxy(foo).instance_eval(&Foo.before_blocks[0])
+      mock.proxy(foo).instance_eval(&Foo.before_blocks[0][1])
+      mock.proxy(foo).instance_eval(&Foo.before_blocks[1][1])
       foo.index
     end
   end

@@ -21,13 +21,8 @@ module Www
       def put(pattern)    _(pattern, :put)    end
       def delete(pattern) _(pattern, :delete) end
 
-      def before(method = nil, &block)
-        raise 'must specify one of method or block' if (method && block) || [method, block].all? { |i| i.nil? }
-        if method
-          before_blocks << method.to_sym
-        elsif block
-          before_blocks << block
-        end
+      def before(*route_names, &block)
+        before_blocks << [route_names.map{ |i| i.to_sym }, block]
       end
 
       def before_blocks
@@ -43,11 +38,8 @@ module Www
         class_eval do
           alias_method :"www_#{name}", name
           define_method name do |*args|
-            self.class.before_blocks.each do |block|
-              case block
-              when Symbol
-                self.send(block)
-              else
+            self.class.before_blocks.each do |route_names, block|
+              if route_names.empty? || route_names.include?(name)
                 instance_eval(&block)
               end
             end
