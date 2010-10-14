@@ -53,7 +53,7 @@ module Www
 
       def find_route(path, request_method)
         [@@routes.detect { |route|
-            path.match(route.pattern) && route.request_methods.include?(request_method) }, $~]
+            path.match(route.pattern) && route.request_methods.include?(request_method.downcase.to_sym) }, $~]
       end
 
       def call(env)

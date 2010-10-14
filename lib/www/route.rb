@@ -4,7 +4,7 @@ module Www
     attr_accessor :pattern, :request_methods, :name, :clazz
     def initialize(pattern, request_methods, clazz)
       @pattern = "^#{pattern}$"
-      @request_methods = [request_methods].flatten.map { |m| m.to_s.upcase }
+      @request_methods = [request_methods].flatten.map { |m| m.to_s.downcase.to_sym }
       @clazz = clazz
     end
 
