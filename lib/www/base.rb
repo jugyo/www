@@ -1,6 +1,8 @@
 # encoding: utf-8
 module Www
   class Base
+    include View
+
     class << self
       @@current_route = nil
       @@routes = []
@@ -36,6 +38,7 @@ module Www
         class_eval do
           alias_method :"www_#{name}", name
           define_method name do |*args|
+            @route_name = name
             instance_eval(&self.class.before_block)
             body = send(:"www_#{name}", *args) || ''
             body = body.inspect unless body.is_a?(String)
@@ -55,6 +58,7 @@ module Www
     end
 
     def initialize(request = nil)
+      # TODO: @_ で始まるようにした方がいいかもしれない
       @request = request
       @response = Rack::Response.new
     end

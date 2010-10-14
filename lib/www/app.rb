@@ -1,6 +1,7 @@
 # encoding: utf-8
 module Www
   class App
+    # NOTE: ここでやるのも微妙だなぁ
     def self.call(env)
       request = Rack::Request.new(env)
       route, match = Base.find_route(request.path_info, request.request_method)
@@ -14,7 +15,7 @@ module Www
         puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})" # TODO: use logger
         handler.send(route.name, *args)
       else
-        error 404
+        Base.error 404
       end
     end
   end

@@ -23,19 +23,31 @@ app.rb
 
       get '/foo'
       def foo(params)
-        params
+        haml :title => 'foo'
       end
 
-      get %r{/regexp/?(.*)} # ex: /regexp/foo
+      get '/regexp/?(.*)' # ex: /regexp/foo
       def regexp(arg, params)
         "#{arg} - #{params.inspect}"
       end
 
-      get %r{/(\d{4})/(\d{2})/(\d{2})} # ex: /2009/10/10
+      get '/(\d{4})/(\d{2})/(\d{2})' # ex: /2009/10/10
       def entry(year, month, date)
         [year, month, date]
       end
+
+      def helper
+        'bar'
+      end
     end
+
+views/foo.haml
+
+    !!!
+    %html
+      %body
+        %h1= title
+        %p= helper
 
 config.ru
 
@@ -61,7 +73,8 @@ TODO
 Run Example
 ----
 
-    shotgun -Ilib example/config.ru
+    % cd example
+    % shotgun -I../lib config.ru
 
 Note on Patches/Pull Requests
 ----
