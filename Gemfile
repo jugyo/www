@@ -1,4 +1,7 @@
 # encoding: utf-8
+gem 'tilt'
+gem 'haml'
 gem 'guard-livereload'
 gem 'rspec'
-gem 'tilt'
+gem 'rack-test'
+gem 'rr'
