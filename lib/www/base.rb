@@ -55,6 +55,24 @@ module Www
         [@@routes.detect { |route|
             path.match(route.pattern) && route.request_methods.include?(request_method) }, $~]
       end
+
+      def call(env)
+        request = Rack::Request.new(env)
+        route, match = find_route(request.path_info, request.request_method)
+        if route
+          handler = route.clazz.new(request)
+          args = match[1..-1] << request.params
+          args = adjust_args_for(args, handler.method(:"www_#{route.name}").arity)
+          puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})" # TODO: use logger
+          handler.send(route.name, *args)
+        else
+          error 404
+        end
+      end
+
+      def adjust_args_for(args, arity)
+        args = args[0, arity] if arity >= 0
+      end
     end
 
     def initialize(request = nil)
