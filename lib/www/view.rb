@@ -8,14 +8,12 @@ module Www
     end
 
     module ClassMethods
-      @@view_dir = 'views'
-
       def view_dir(dir)
         @view_dir = dir
       end
 
       def view_dir_path
-        @view_dir || @@view_dir
+        @view_dir || '.'
       end
     end
 
