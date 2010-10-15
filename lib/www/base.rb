@@ -68,7 +68,7 @@ module Www
           handler = route.clazz.new(request)
           args = match[1..-1] << request.params
           args = adjust_args_for(args, handler.method(:"www_#{route.name}").arity)
-          puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})" # TODO: use logger
+          # puts "#{route.clazz}##{route.name}(#{args.map{|i| "'#{i}'"}.join(', ')})"
           handler.send(route.name, *args)
         else
           error 404
