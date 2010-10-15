@@ -1,5 +1,5 @@
 class Foo < Www::Base
-  view_dir File.join(File.dirname(__FILE__), 'views')
+  view_dir 'spec/views'
 
   before {}
   before(:foo, :index) {}
