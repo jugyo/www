@@ -4,15 +4,12 @@ module Www
     include View
 
     class << self
-      @@current_route = nil
-      @@routes = []
-
       def routes
-        @@routes
+        @@routes ||= []
       end
 
       def route(pattern, methods = [:get])
-        @@current_route = Route.new(pattern, methods, self)
+        @current_route = Route.new(pattern, methods, self)
       end
       alias_method :_, :route
 
@@ -30,10 +27,10 @@ module Www
       end
 
       def method_added(name)
-        return unless @@current_route
-        @@current_route.name = name
-        @@routes << @@current_route
-        @@current_route = nil
+        return unless @current_route
+        @current_route.name = name
+        routes << @current_route
+        @current_route = nil
 
         class_eval do
           alias_method :"www_#{name}", name
@@ -57,7 +54,7 @@ module Www
       end
 
       def find_route(path, request_method)
-        [@@routes.detect { |route|
+        [routes.detect { |route|
             path.match(route.pattern) && route.request_methods.include?(request_method.downcase.to_sym) }, $~]
       end
 
