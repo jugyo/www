@@ -78,7 +78,6 @@ module Www
     end
 
     def initialize(request = nil)
-      # TODO: @_ で始まるようにした方がいいかもしれない
       @request = request
       @response = Rack::Response.new
     end
