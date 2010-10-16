@@ -28,7 +28,7 @@ module Www
       values = args[0]
       path = File.join(self.class.view_dir_path, "#{name}.#{type}")
       template = Tilt.new(path)
-      template.render self, values # TODO: helper class instead of Object.new
+      template.render self, values
     end
   end
 end
