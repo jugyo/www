@@ -8,6 +8,14 @@ module Www
     end
 
     module ClassMethods
+      def layout(layout)
+        @layout = layout
+      end
+
+      def layout_path
+        @layout || 'layout'
+      end
+
       def view_dir(dir)
         @view_dir = dir
       end
@@ -26,9 +34,16 @@ module Www
     def render(type, *args)
       name = args[0].is_a?(String) ? args.shift : @route_name
       values = args[0]
-      path = File.join(self.class.view_dir_path, "#{name}.#{type}")
-      template = Tilt.new(path)
-      template.render self, values
+      view_path = File.join(self.class.view_dir_path, "#{name}.#{type}")
+      layout_path = "#{self.class.layout_path}.#{type}"
+
+      if File.exists?(layout_path)
+        Tilt.new(layout_path).render self, values do
+          Tilt.new(view_path).render self, values
+        end
+      else
+        Tilt.new(view_path).render self, values
+      end
     end
   end
 end

@@ -1,5 +1,6 @@
 class Foo < Www::Base
   view_dir 'spec/views'
+  layout 'spec/views/layout'
 
   before {}
   before(:foo, :index) {}
@@ -11,7 +12,7 @@ class Foo < Www::Base
 
   get '/foo'
   def foo(params)
-    haml :params => params
+    haml :foo => params['foo']
   end
 
   get '/regexp/?(.*)'
@@ -45,7 +46,13 @@ describe "Www" do
 
   it 'should call foo as "/foo" with params' do
     params = {'foo' => 'bar'}
-    get('/foo', params).body.chomp.should == params.inspect
+    get('/foo', params).body.should == <<-EOS
+<html>
+  <body>
+    bar
+  </body>
+</html>
+    EOS
   end
 
   it 'should call regexp as "/regexp/..."' do
